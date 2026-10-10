@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Kettle &amp; Crema – Coffee House</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,600;12..96,800&family=Pacifico&display=swap">
+<style>
+    :root{
+  --pink1:#FFE4EC; --pink2:#FFC8DB; --pink3:#F8A5C2; --rose:#E0658F;
+  --ink:#3E2A26; --muted:#7A5A58; --choc:#8A5A48; --choc-d:#6B4234; --card:#FFF6F9; --line:#F3BCD0;
+  box-sizing:border-box;
+  padding-top:env(safe-area-inset-top,0px); padding-bottom:env(safe-area-inset-bottom,0px);
+}
+*{box-sizing:border-box;margin:0}
+html{scroll-behavior:smooth;scroll-padding-top:70px;height:100%}
+body{
+  min-height:100%;color:var(--ink);font-family:"Bricolage Grotesque",system-ui,-apple-system,"Segoe UI",sans-serif;line-height:1.6;font-size:17px;
+  background:linear-gradient(160deg,var(--pink1) 0%,var(--pink2) 45%,var(--pink3) 100%) fixed;
+  background-color:var(--pink2);
+}
+a{color:inherit}
+:focus-visible{outline:3px solid var(--choc);outline-offset:3px}
+#progress{position:fixed;top:0;left:0;height:4px;width:0;background:var(--choc);z-index:20}
+#glow{position:fixed;inset:0;pointer-events:none;z-index:0;background:radial-gradient(380px circle at var(--mx,50%) var(--my,30%),rgba(255,255,255,.55),transparent 70%)}
+.wrap{max-width:1040px;margin:0 auto;padding:0 22px;position:relative;z-index:1}
+header{position:sticky;top:0;z-index:10;background:rgba(255,228,236,.8);backdrop-filter:blur(8px);border-bottom:1px solid var(--line)}
+header .wrap{display:flex;justify-content:space-between;align-items:center;height:64px}
+.logo{font-family:Pacifico,cursive;font-size:1.5rem;text-decoration:none;color:var(--choc);display:inline-flex}
+.logo span{display:inline-block;transition:transform .25s,color .25s}
+.logo:hover span{animation:hop .5s ease both;animation-delay:calc(var(--i)*35ms);color:var(--rose)}
+@keyframes hop{50%{transform:translateY(-8px) rotate(-6deg)}}
+nav a{margin-left:20px;text-decoration:none;font-weight:600;font-size:.95rem}
+nav a:hover{color:var(--rose)}
+.badge{display:inline-flex;align-items:center;gap:8px;background:var(--card);border:1px solid var(--line);padding:5px 14px;border-radius:999px;font-size:.9rem;font-weight:600;margin-bottom:18px}
+.dot{width:10px;height:10px;border-radius:50%;background:#aaa}
+.badge.open .dot{background:#3BA55D;box-shadow:0 0 0 4px rgba(59,165,93,.25)}
+.badge.closed .dot{background:#D1495B}
+.hero{padding:64px 0 56px;display:grid;gap:40px;grid-template-columns:1.3fr 1fr;align-items:center}
+.hero h1{font-size:clamp(2.6rem,7.5vw,5.4rem);line-height:1;font-weight:800;letter-spacing:-.04em;color:var(--choc)}
+.hero h1 .w{display:inline-block;white-space:nowrap}
+.hero h1 .ch{display:inline-block;background:linear-gradient(120deg,var(--choc),var(--rose));-webkit-background-clip:text;background-clip:text;color:transparent;opacity:0;transform:translateY(40px) rotate(8deg);animation:pop .7s cubic-bezier(.2,1.4,.4,1) forwards;animation-delay:calc(var(--i)*45ms);transition:transform .2s}
+.hero h1 .ch:hover{transform:translateY(-10px) scale(1.15) rotate(-5deg)}
+@keyframes pop{to{opacity:1;transform:none}}
+.typed{margin-top:18px;font-size:1.25rem;font-weight:600;color:var(--rose);min-height:1.8em}
+.typed::after{content:"|";margin-left:2px;animation:blink 1s steps(1) infinite}
+@keyframes blink{50%{opacity:0}}
+.hero p{margin:10px 0 28px;max-width:46ch;color:var(--muted);font-size:1.1rem}
+.btn{display:inline-block;background:var(--choc);color:#fff;padding:13px 24px;border-radius:999px;font-weight:600;text-decoration:none;border:2px solid var(--choc);font:inherit;font-weight:600;cursor:pointer;transition:background .2s,transform .2s}
+.btn:hover{background:var(--choc-d);border-color:var(--choc-d);transform:translateY(-2px)}
+.btn.alt{background:transparent;color:var(--choc);margin-left:10px}
+.btn.alt:hover{background:var(--choc);color:#fff}
+.cup{justify-self:center;width:min(300px,80%);filter:drop-shadow(0 18px 20px rgba(138,90,72,.25))}
+.steam path{stroke:#fff;stroke-width:5;fill:none;stroke-linecap:round;opacity:.6;animation:rise 3.2s ease-in-out infinite}
+.steam path:nth-child(2){animation-delay:.8s}.steam path:nth-child(3){animation-delay:1.6s}
+@keyframes rise{0%,100%{transform:translateY(6px);opacity:.2}50%{transform:translateY(-6px);opacity:.8}}
+section{padding:56px 0}
+h2{font-size:clamp(1.9rem,4vw,2.8rem);letter-spacing:-.03em;line-height:1.1;margin-bottom:10px;color:var(--choc)}
+.sub{color:var(--muted);margin-bottom:24px;max-width:52ch}
+.tools{display:flex;gap:12px;flex-wrap:wrap;align-items:center;justify-content:space-between;margin-bottom:18px}
+.tabs{display:flex;gap:8px;flex-wrap:wrap}
+.tabs button{font:inherit;font-weight:600;padding:9px 20px;border-radius:999px;border:2px solid var(--choc);background:transparent;color:var(--choc);cursor:pointer}
+.tabs button[aria-selected="true"]{background:var(--choc);color:#fff}
+#search{font:inherit;padding:9px 16px;border-radius:999px;border:2px solid var(--line);background:var(--card);min-width:200px;color:var(--ink)}
+.menu{background:var(--card);border-radius:20px;padding:10px 26px;border:1px solid var(--line);box-shadow:0 10px 30px rgba(224,101,143,.15)}
+.item{display:flex;gap:16px;justify-content:space-between;align-items:center;padding:16px 0;border-bottom:1px dashed var(--line)}
+.item:last-child{border-bottom:0}
+.item b{font-size:1.08rem}.item small{display:block;color:var(--muted);font-size:.93rem}
+.price{font-weight:800;white-space:nowrap}
+.add{width:36px;height:36px;border-radius:50%;border:0;background:var(--choc);color:#fff;font-size:1.3rem;cursor:pointer;line-height:1}
+.add:hover{background:var(--rose)}
+.empty{padding:22px 0;color:var(--muted)}
+#order{position:fixed;right:18px;bottom:calc(18px + env(safe-area-inset-bottom,0px));z-index:15;background:var(--choc);color:#fff;border:0;border-radius:999px;padding:12px 20px;font:inherit;font-weight:600;cursor:pointer;box-shadow:0 8px 24px rgba(0,0,0,.2)}
+#order.bump{animation:bump .35s}
+@keyframes bump{50%{transform:scale(1.15)}}
+#cart{position:fixed;right:18px;bottom:calc(76px + env(safe-area-inset-bottom,0px));z-index:15;width:min(320px,calc(100vw - 36px));max-height:60vh;overflow:auto;background:var(--card);border:1px solid var(--line);border-radius:18px;padding:18px;box-shadow:0 14px 40px rgba(224,101,143,.35)}
+#cart[hidden]{display:none}
+#cart h3{color:var(--choc);margin-bottom:8px}
+#cart li{display:flex;justify-content:space-between;gap:10px;padding:6px 0;list-style:none}
+#cart ul{padding:0}
+#cart .tot{display:flex;justify-content:space-between;font-weight:800;border-top:1px solid var(--line);margin-top:8px;padding-top:10px}
+#cart .btn{width:100%;margin-top:12px;text-align:center}
+split{display:grid;grid-template-columns:1fr 1fr;gap:40px;align-items:start}
+.about p{margin-bottom:14px;color:var(--muted)}
+.hours{position:relative;overflow:hidden;color:#4A1F33;border-radius:26px;padding:30px;background:linear-gradient(145deg,#FFD6E5 0%,#FFB3CF 45%,#F78FB3 100%);box-shadow:0 18px 40px rgba(224,101,143,.4);border:2px solid rgba(255,255,255,.6)}
+.hours::before,.hours::after{content:"";position:absolute;border-radius:50%;background:rgba(255,255,255,.35)}
+.hours::before{width:160px;height:160px;right:-50px;top:-50px}
+.hours::after{width:100px;height:100px;left:-30px;bottom:-30px;background:rgba(255,255,255,.25)}
+.hours>*{position:relative;z-index:1}
+.hours h3{font-family:Pacifico,cursive;font-weight:400;font-size:1.7rem;margin-bottom:14px;color:#7A2D4E}
+.hours dl{display:grid;grid-template-columns:auto 1fr;gap:6px 0}
+.hours dt,.hours dd{padding:8px 12px;margin:0}
+.hours dd{text-align:right;font-weight:600}
+.hours .today{background:rgba(255,255,255,.55);border-radius:12px}
+.hours dt.today{border-top-right-radius:0;border-bottom-right-radius:0}
+.hours dd.today{border-top-left-radius:0;border-bottom-left-radius:0}
+.hours p{margin-top:16px;font-size:.95rem}
+footer{border-top:1px solid var(--line);padding:28px 0;color:var(--muted);font-size:.9rem;margin-top:30px}
+footer .wrap{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap}
+@media(max-width:760px){.hero,.split{grid-template-columns:1fr}.hero{padding-top:36px}nav a{margin-left:14px}.btn.alt{margin:10px 0 0}}
+@media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}.hero h1 .ch{opacity:1;transform:none}html{scroll-behavior:auto}}
+</style>
+</head>
+<body>
+<div id="progress"></div><div id="glow"></div>
+<header><div class="wrap">
+  <a class="logo" href="#top" id="logo" aria-label="Kettle and Crema">Kettle &amp; Crema</a>
+  <nav aria-label="Main"><a href="#menu">Menu</a><a href="#about">Our story</a><a href="#visit">Visit</a></nav>
+</div></header>
+
+<main id="top">
+<div class="wrap hero">
+  <div>
+    <div class="badge" id="status"><span class="dot"></span><span id="statusText">Checking hours…</span></div>
+    <h1 id="h1" aria-label="Good coffee, slowly made.">Good coffee, slowly made.</h1>
+    <div class="typed" id="typed" aria-live="off"></div>
+    <p>Small-batch beans, roasted fresh every week and poured by people who remember your order. Come in for a cup, stay for the conversation.</p>
+    <a class="btn" href="#menu">See the menu</a><a class="btn alt" href="#visit">Find us</a>
+  </div>
+  <svg class="cup" viewBox="0 0 300 300" role="img" aria-label="Steaming cup of coffee">
+    <g class="steam"><path d="M105 80c-14-18 14-30 0-50"/><path d="M150 80c-14-18 14-30 0-50"/><path d="M195 80c-14-18 14-30 0-50"/></g>
+    <path d="M60 110h180v70a80 80 0 0 1-80 80h-20a80 80 0 0 1-80-80z" fill="#fff"/>
+    <path d="M240 130h22a28 28 0 0 1 0 56h-30" fill="none" stroke="#fff" stroke-width="16" stroke-linecap="round"/>
+    <path d="M60 150h180v30a80 80 0 0 1-80 80h-20a80 80 0 0 1-80-80z" fill="#F8A5C2" opacity=".55"/>
+    <ellipse cx="150" cy="112" rx="90" ry="14" fill="#6B4234"/>
+    <ellipse cx="150" cy="112" rx="64" ry="8" fill="#C98F6B"/>
+    <ellipse cx="150" cy="282" rx="110" ry="9" fill="#8A5A48" opacity=".2"/>
+  </svg>
+</div>
+
+<section id="menu"><div class="wrap">
+  <h2>The menu</h2>
+  <p class="sub">Everything is made to order. Tap + to add a drink to your order.</p>
+  <div class="tools">
+    <div class="tabs" role="tablist" aria-label="Menu categories"></div>
+    <input id="search" type="search" placeholder="Search the menu" aria-label="Search the menu">
+  </div>
+  <div class="menu" id="panel" role="tabpanel" aria-live="polite"></div>
+</div></section>
+
+<section id="about"><div class="wrap split about">
+  <div>
+    <h2>Our story</h2>
+    <p>We opened with one espresso machine, a handful of stools and a simple idea: coffee should taste like where it came from, not like how long it sat on a shelf.</p>
+    <p>We buy directly from small farms, roast in small batches and bake our pastries every morning. No rush, no gimmicks.</p>
+  </div>
+  <div>
+    <h2>What we care about</h2>
+    <p><b>Fresh beans.</b> Roasted weekly, ground when you order.</p>
+    <p><b>Fair sourcing.</b> We pay farmers above market price.</p>
+    <p><b>A seat for everyone.</b> Free Wi-Fi, plugs at every table and a quiet corner for reading.</p>
+  </div>
+</div></section>
+
+<section id="visit"><div class="wrap split">
+  <div>
+    <h2>Visit us</h2>
+    <p class="sub">123 Market Street<br>Your Town<br>hello@kettleandcrema.example<br>+000 000 000 000</p>
+    <a class="btn" href="mailto:hello@kettleandcrema.example">Email us</a>
+  </div>
+  <div class="hours">
+    <h3>Opening hours</h3>
+    <dl id="hoursList"></dl>
+    <p>Last orders 15 minutes before closing.</p>
+  </div>
+</div></section>
+</main>
+
+<footer><div class="wrap"><span>© <span id="yr"></span> Kettle &amp; Crema</span><span>Made with care, served warm.</span></div></footer>
+
+<button id="order" aria-expanded="false" aria-controls="cart">Your order (0)</button>
+<div id="cart" hidden><h3>Your order</h3><ul id="cartList"></ul><div class="tot"><span>Total</span><span id="total">$0.00</span></div><button class="btn" id="checkout">Place order</button></div>
+<script>
+const $=s=>document.querySelector(s);
+const reduce=matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+/* Stylish letters: logo + headline */
+$("#logo").innerHTML=[..."Kettle & Crema"].map((c,i)=>`<span style="--i:${i}">${c===" "?"&nbsp;":c==="&"?"&amp;":c}</span>`).join("");
+let n=0;
+$("#h1").innerHTML=$("#h1").textContent.split(" ").map(w=>`<span class="w">${[...w].map(c=>`<span class="ch" style="--i:${n++}" aria-hidden="true">${c}</span>`).join("")}</span> `).join("");
+/* Typing effect */
+const phrases=["Fresh roasted every week.","Sweet pastries, baked at dawn.","Your seat is waiting.","Pour-over, latte or cold brew."];
+let pi=0,ci=0,del=false;
+function type(){
+  const t=phrases[pi];
+  $("#typed").textContent=t.slice(0,ci);
+  if(reduce){$("#typed").textContent=t;return}
+  if(!del&&ci===t.length){del=true;return setTimeout(type,1600)}
+  if(del&&ci===0){del=false;pi=(pi+1)%phrases.length}
+  ci+=del?-1:1;setTimeout(type,del?30:70);
+}
+type();
+/* Scroll progress + mouse glow */
+addEventListener("scroll",()=>{
+  const h=document.documentElement;
+  $("#progress").style.width=(h.scrollTop/(h.scrollHeight-h.clientHeight||1)*100)+"%";
+},{passive:true});
+addEventListener("pointermove",e=>{
+  const g=$("#glow").style;g.setProperty("--mx",e.clientX+"px");g.setProperty("--my",e.clientY+"px");
+},{passive:true});
+/* Opening hours: render, highlight today, open/closed badge */
+const HOURS=[["Sunday",9,15],["Monday",7,18],["Tuesday",7,18],["Wednesday",7,18],["Thursday",7,18],["Friday",7,18],["Saturday",8,19]];
+const fmt=h=>String(h).padStart(2,"0")+":00";
+const today=new Date().getDay();
+$("#hoursList").innerHTML=[1,2,3,4,5,6,0].map(d=>{
+  const [name,o,c]=HOURS[d],cls=d===today?' class="today"':"";
+  return `<dt${cls}>${name}</dt><dd${cls}>${fmt(o)} – ${fmt(c)}</dd>`;
+}).join("");
+(function(){
+  const now=new Date(),[,o,c]=HOURS[today],hrs=now.getHours()+now.getMinutes()/60,b=$("#status");
+  const open=hrs>=o&&hrs<c;
+  b.classList.add(open?"open":"closed");
+  $("#statusText").textContent=open?`Open now · closes at ${fmt(c)}`:`Closed now · opens ${hrs<o?"today":"tomorrow"} at ${fmt(hrs<o?o:HOURS[(today+1)%7][1])}`;
+})();
+/* Menu: tabs, search, order */
+const MENU={
+  "Espresso":[["Espresso","Double shot, rich and sweet",3],["Americano","Espresso with hot water",3.5],["Cappuccino","Equal parts espresso, milk and foam",4.5],["Latte","Silky steamed milk, light foam",4.8],["Flat white","Strong, smooth and small",4.5],["Mocha","Espresso, dark chocolate, steamed milk",5.2]],
+  "Filter & cold":[["Pour-over","Single-origin, brewed by hand",4.5],["Batch brew","Today's house filter",3],["Cold brew","Steeped 18 hours, served over ice",4.8],["Iced latte","Espresso, cold milk, ice",5]],
+  "Bites":[["Butter croissant","Baked every morning",3.5],["Banana bread","Toasted, with butter",3.8],["Cheese toastie","Sourdough, cheddar, onion",6.5],["Chocolate cookie","Big, soft, dark chocolate chunks",2.8]]
+};
+let tab=Object.keys(MENU)[0];
+const tabsEl=$(".tabs"),panel=$("#panel");
+function render(){
+  const q=$("#search").value.trim().toLowerCase();
+  tabsEl.querySelectorAll("button").forEach(b=>b.setAttribute("aria-selected",b.dataset.n===tab&&!q));
+  const items=q?Object.values(MENU).flat().filter(i=>(i[0]+i[1]).toLowerCase().includes(q)):MENU[tab];
+  panel.innerHTML=items.length?items.map(i=>`<div class="item"><div><b>${i[0]}</b><small>${i[1]}</small></div><div style="display:flex;gap:14px;align-items:center"><span class="price">$${i[2].toFixed(2)}</span><button class="add" data-name="${i[0]}" data-price="${i[2]}" aria-label="Add ${i[0]} to order">+</button></div></div>`).join(""):`<p class="empty">Nothing matches “${q.replace(/[<>&]/g,"")}”. Try another word.</p>`;
+}
+Object.keys(MENU).forEach(k=>{const b=document.createElement("button");b.textContent=k;b.dataset.n=k;b.setAttribute("role","tab");b.onclick=()=>{tab=k;$("#search").value="";render()};tabsEl.appendChild(b)});
+$("#search").addEventListener("input",render);
+render();
+const cart={};
+function updateCart(){
+  const e=Object.entries(cart),count=e.reduce((s,[,v])=>s+v.q,0),total=e.reduce((s,[,v])=>s+v.q*v.p,0);
+  $("#order").textContent=`Your order (${count})`;
+  $("#cartList").innerHTML=e.length?e.map(([k,v])=>`<li><span>${v.q} × ${k}</span><span>$${(v.q*v.p).toFixed(2)}</span></li>`).join(""):"<li>Your order is empty. Tap + on any item.</li>";
+  $("#total").textContent="$"+total.toFixed(2);
+  $("#order").classList.remove("bump");void $("#order").offsetWidth;$("#order").classList.add("bump");
+}
+panel.addEventListener("click",e=>{
+  const b=e.target.closest(".add");if(!b)return;
+  const k=b.dataset.name;cart[k]=cart[k]||{q:0,p:+b.dataset.price};cart[k].q++;updateCart();
+});
+$("#order").onclick=()=>{const c=$("#cart");c.hidden=!c.hidden;$("#order").setAttribute("aria-expanded",!c.hidden)};
+$("#checkout").onclick=()=>{
+  if(!Object.keys(cart).length){alert("Add something to your order first.");return}
+  alert("Thank you! Your order is placed. We'll call your name at the counter.");
+  Object.keys(cart).forEach(k=>delete cart[k]);updateCart();$("#cart").hidden=true;
+};
+updateCart();
+$("#yr").textContent=new Date().getFullYear();
+</script>
+</body>
+</html>
